@@ -1,0 +1,8 @@
+{% load static %}
+
+<li class="product_list_item">
+	<span class="product_list_item-name">{{ name| title }}</span>
+	<span class="product_list_item-description">{{ description }}</span>
+	<span class="product_list_item-cost">{{ cost }}</span>
+	<a href="{% url 'products:detail' pk=id %}" class="product_list_item-link">Go</a>
+</li>

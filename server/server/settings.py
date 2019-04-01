@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'accounts',
+
     'main',
     'products',
 ]
@@ -104,6 +106,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+AUTH_USER_MODEL = 'accounts.AccountUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

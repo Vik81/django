@@ -1,0 +1,19 @@
+{% extends 'server/master.html' %}
+
+{% block page_title %}
+Detail products
+{% endblock %}
+
+{% block page_content %}
+<h1 class="product_name">{{ object.name| title }}</h1>
+<div class="categories">
+<span class="categories_description">
+	{{ object.description }}
+</span>
+</div>
+	<div class="categories_list">
+		{% for itm in object.products_set.all %}
+		{% include 'server/product.html' with name=itm.name description=itm.description cost=itm.cost id=itm.id%}
+		{% endfor %}
+	</div>
+{% endblock %}

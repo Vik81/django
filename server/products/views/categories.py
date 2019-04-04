@@ -1,18 +1,46 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+
+from django.views.generic import (
+    View
+)
 from products.models import Category
 from products.forms import CategoryForm, CategoryModelForm
+
+
+class ProductCreate(View):
+    def get(self):
+        pass
+
+    def post(self):
+        pass
+
+
+class ProductUpdate(View):
+    def get(self):
+        pass
+
+    def post(self):
+        pass
+
+
+
+
+class ProductUpdate(View):
+    pass
+
 
 
 def category_create(request):
     form = CategoryModelForm()
     if request.method == 'POST':
-        form = CategoryModelForm(data=request.POST)
+        form = CategoryModelForm(
+            data=request.POST,
+            files=request.FILES,
+        )
+
         if form.is_valid():
             form.save()
-            # Category.objects.create(
-            #     name=form.cleaned_data.get('name')
-            # )
             return redirect('products:main')
     return render(
         request,
@@ -27,6 +55,7 @@ def category_update(request, pk):
     if request.method == 'POST':
         form = CategoryModelForm(
             request.POST,
+            files=request.FILES,
             instance=obj
         )
         if form.is_valid():

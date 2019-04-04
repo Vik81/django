@@ -13,23 +13,46 @@
 		{% endfor %}
 	</ul>
 
-    <!--{% block page_scipts %}-->
-	<!--<script>-->
+<button id="load-button">
+	Show All
+</button>
 
-	<!--const url= 'http://127.0.0.1:8000/products/api/';-->
-	<!--const container = document.qerySelector('.product_list');-->
-	<!--fetc(url)-->
-	    <!--.then(response => response.json())-->
-	    <!--.then(response => {-->
-	    	<!--html = ''-->
-	    	<!--response.results.map()-->
-
-
-	<!--</script>-->
-	<!--{% endblock %}-->
 <div class="div_flex">
 	<div class="div_item"><a href="catalog/vobler.html"><img src="/static/main/assets/img_1_pre.jpg" alt=""><br>Воблер</a></div>
 	<div class="div_item"><a href="catalog/fishing_line.html"><img src="/static/main/assets/img_2_pre.jpg" alt=""><br>Леска</a></div>
 	<div class="div_item"><a href="catalog/Coil_is_spinning-free.html"><img src="/static/main/assets/img_3_pre.jpg" alt=""><br>Катушка безынерционная</a></div>
 </div>
 {% endblock %}
+
+
+    {% block page_scipts %}
+	<script>
+
+	const url= 'http://127.0.0.1:8000/products/api/';
+	const container = document.querySelector('.product_list');
+
+    const loadbuttom = document.querySelector('#load-button');
+
+	const asyncLoadData = () =>{
+		fetc(url)
+	    .then(response => response.json())
+	    .then(response => {
+	    	loadedhtml = ''
+	    	response.results.map(itm => { loadedhtml += renderProduct(itm)})}
+	    	container.innerHTML = loadedhtml
+	    }
+
+const renderProduct = ({id, name, description, cost}) => (
+'
+<div class="product_list_item">
+	<span class="product_list_item-name"> ${name}</span>
+	<span class="product_list_item-description">${ description }</span>
+	<span class="product_list_item-cost">${ cost }</span>
+	<a href="/products/${ id }" class="product_list_item-link">Go</a>
+</div>
+'
+)
+
+loadButton.addEventListenner('click', asyncLoadData);
+	</script>
+	{% endblock %}

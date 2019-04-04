@@ -1,8 +1,45 @@
 import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+
+from django.views.generic import (
+    CreateView, UpdateView,
+    DeleteView, ListView, DetailView
+)
 from products.models import Product
 from products.forms import ProductForm
+
+
+class ProductCreate(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'products/create.html'
+    success_url = 'products:main'
+
+
+class ProductUpdate(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'products/update.html'
+    success_url = 'products:main'
+
+
+class ProductDelete(DeleteView):
+    model = Product
+    template_name = 'products/delete.html'
+    success_url = 'products:main'
+
+
+class ProductList(ListView):
+    model = Product
+    template_name = 'products/index.html'
+
+
+class ProductDetail(DetailView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'products/detail.html'
+    success_url = 'products:main'
 
 
 def product_rest_list(request):
@@ -12,6 +49,7 @@ def product_rest_list(request):
     for itm in object_list:
         data.append(
             {
+                'id': itm.id,
                 'name': itm.name,
                 'image': itm.imaage.url if itm.image else None,
                 'category': itm.category.name,
@@ -52,7 +90,10 @@ def product_detail(request, pk):
 def product_create(request):
     form = ProductForm()
     if request.method == 'POST':
-        form = ProductForm(data=request.POST)
+        form = ProductForm(
+            data=request.POST,
+            files=request.FILES,
+        )
         if form.is_valid():
             form.save()
             # Category.objects.create(
@@ -72,7 +113,8 @@ def product_update(request, pk):
     if request.method == 'POST':
         form = ProductForm(
             request.POST,
-            instance=obj
+            files=request.FILES,
+            instance=obj,
         )
         if form.is_valid():
             form.save()
